@@ -75,4 +75,26 @@ public class TarjetaDAO
         return t;
     }
     
+    
+    
+    // Recupera el nombre del propietario de la tarjeta por su numero de tarjeta
+    public String obtenerNombrePorTarjeta(String numeroTarjeta) {
+        String nombre = "Usuario";
+        try {
+            Connection con = Conexion.obtener();
+            String sql = "SELECT nombre FROM cuenta " +
+                         "JOIN tarjeta ON cuenta.id = tarjeta.cuenta_id " +
+                         "WHERE tarjeta.numero_tarjeta = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, numeroTarjeta);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                nombre = rs.getString("nombre");
+            }
+        } catch (Exception e) {
+            System.err.println("Error al obtener nombre: " + e.getMessage());
+        }
+        return nombre;
+    }
+    
 }

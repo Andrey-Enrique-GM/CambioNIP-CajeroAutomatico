@@ -8,6 +8,7 @@ public class Cuenta
     
     // Atributos
     private int id;
+    private String nombre;
     private String numeroCuenta;
     private double saldo;
     private String estado;
@@ -15,14 +16,16 @@ public class Cuenta
     
     
     // Constructores
-    public Cuenta(int id, String numeroCuenta, double saldo, String estado) {
+    public Cuenta(int id, String nombre, String numeroCuenta, double saldo, String estado) {
         this.id = id;
+        this.nombre = nombre;
         this.numeroCuenta = numeroCuenta;
         this.saldo = saldo;
         this.estado = estado;
     }
 
-    public Cuenta(String numeroCuenta, double saldo, String estado) {
+    public Cuenta(String nombre, String numeroCuenta, double saldo, String estado) {
+        this.nombre = nombre;
         this.numeroCuenta = numeroCuenta;
         this.saldo = saldo;
         this.estado = estado;
@@ -36,7 +39,7 @@ public class Cuenta
     // to String
     @Override
     public String toString() {
-        return "Cuenta{" + "id=" + id + ", numeroCuenta=" + numeroCuenta + ", saldo=" + saldo + ", estado=" + estado + '}';
+        return "Cuenta{" + "id=" + id + ", nombre=" + nombre + ", numeroCuenta=" + numeroCuenta + ", saldo=" + saldo + ", estado=" + estado + '}';
     }
     
     
@@ -50,6 +53,14 @@ public class Cuenta
         this.id = id;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    
     public String getNumeroCuenta() {
         return numeroCuenta;
     }
