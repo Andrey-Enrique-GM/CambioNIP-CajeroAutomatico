@@ -23,14 +23,14 @@ public class Conexion
      */
     public static Connection obtener() {
         try {
-            // Verificamos si la conexión es nula o se cerro por tiempo de inactividad
+            // Verificamos si la conexion es nula o se cerro por tiempo de inactividad
             if (con == null || con.isClosed()) {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 con = DriverManager.getConnection(url, usuario, clave);
-                System.out.println("¡Conexión establecida con el servidor!");
+                System.out.println("Conexion establecida con el servidor!");
             }
         } catch (Exception ex) {
-            System.err.println("Error de conexión: " + ex.getMessage());
+            System.err.println("Error de conexion: " + ex.getMessage());
         }
         return con;
     }
