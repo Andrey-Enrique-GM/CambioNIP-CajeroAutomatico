@@ -6,7 +6,24 @@ package mx.itson.cambioNIP.view;
 public class CambioNIPForm extends javax.swing.JDialog {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CambioNIPForm.class.getName());
+    
+    
+    
+    private String tarjetaActiva;
 
+    /**
+     * Constructor actualizado para recibir los parametros del menu
+     */
+    public CambioNIPForm(java.awt.Frame parent, boolean modal, String numeroTarjeta) {
+        super(parent, modal);
+        initComponents();
+        this.tarjetaActiva = numeroTarjeta;
+        
+        // Configuraciones estéticas iniciales
+        setTitle("Cambio de NIP - Sesion Activa");
+        setLocationRelativeTo(null);
+    }
+    
     
 
     /**

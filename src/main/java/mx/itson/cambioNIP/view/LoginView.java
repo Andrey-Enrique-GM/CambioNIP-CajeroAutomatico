@@ -18,6 +18,12 @@ public class LoginView extends javax.swing.JFrame {
         setTitle("Cajero Automatico");
         setLocationRelativeTo(null); // Centrar pantalla
     }
+    
+    public void limpiarCampos() {
+        tfNumeroTarjeta.setText("");
+        pfNIP.setText("");
+        tfNumeroTarjeta.requestFocus();
+    }
 
     
     
@@ -150,30 +156,30 @@ public class LoginView extends javax.swing.JFrame {
         String numeroTarjeta = tfNumeroTarjeta.getText().trim();
         // Convertimos el password de char[] a String
         String nip = new String(pfNIP.getPassword());
-
+        
         // Validamos que no esten vacios antes de ir a la BD
         if (numeroTarjeta.isEmpty() || nip.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Por favor, llene todos los campos.", "Campos Vacios", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
-
+        
         mx.itson.cambioNIP.dao.TarjetaDAO tarjetaDAO = new mx.itson.cambioNIP.dao.TarjetaDAO();
-
+        
         // RF1: Verificamos credenciales en la BD
         if (tarjetaDAO.verificarNIP(numeroTarjeta, nip)) {
-
+            
             // Si es correcto, abrimos el Menu Principal
             // Pasamos 'this' para que sea el padre y 'true' para que sea modal
             MenuPrincipalView menu = new MenuPrincipalView(this, true, numeroTarjeta);
-
+            
             // Cerramos o escondemos el Login
             this.dispose(); 
             menu.setVisible(true);
-
+            
         } else {
             // Si los datos estan mal
             javax.swing.JOptionPane.showMessageDialog(this, "Numero de tarjeta o NIP incorrectos.", "Error de Autenticacion", javax.swing.JOptionPane.ERROR_MESSAGE);
-
+            
             // Limpiamos el campo de NIP para reintentar
             pfNIP.setText("");
             pfNIP.requestFocus();

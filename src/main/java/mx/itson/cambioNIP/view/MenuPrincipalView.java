@@ -18,12 +18,23 @@ public class MenuPrincipalView extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.tarjetaActiva = numeroTarjeta;
-        
-        setTitle("Cajero Automatico - " + numeroTarjeta);
-        setLocationRelativeTo(null); // Centrar pantalla
-    }
 
+        // Personalizacion inicial
+        setTitle("Cajero Automatico - Sesion Activa");
+        setLocationRelativeTo(null);
+
+        // Cargamos el nombre del cliente
+        cargarNombreCliente();
+    }
     
+    
+    
+    private void cargarNombreCliente() {
+        mx.itson.cambioNIP.dao.TarjetaDAO dao = new mx.itson.cambioNIP.dao.TarjetaDAO();
+        // Usamos el metodo que definimos previamente para obtener el nombre estetico
+        String nombre = dao.obtenerNombrePorTarjeta(tarjetaActiva);
+        lblNombre.setText("Bienvenid@, " + nombre);
+    }
     
     
     
@@ -153,11 +164,21 @@ public class MenuPrincipalView extends javax.swing.JDialog {
         btnCambioNIP.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         btnCambioNIP.setForeground(new java.awt.Color(255, 255, 255));
         btnCambioNIP.setText("Cambio de NIP");
+        btnCambioNIP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCambioNIPActionPerformed(evt);
+            }
+        });
 
         btnSalir.setBackground(new java.awt.Color(255, 0, 0));
         btnSalir.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         btnSalir.setForeground(new java.awt.Color(255, 255, 255));
         btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Showcard Gothic", 0, 24)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 0, 0));
@@ -181,22 +202,15 @@ public class MenuPrincipalView extends javax.swing.JDialog {
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(btnRetiro, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(btnSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(btnDeposito, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(btnTransferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(btnCambioNIP, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRetiro, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnDeposito, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnTransferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCambioNIP, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -276,6 +290,38 @@ public class MenuPrincipalView extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
+    private void btnCambioNIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambioNIPActionPerformed
+        
+        // Abrimos el formulario de cambio de NIP
+        // 'this.getParent()' porque el padre de los JDialog debe ser el Frame (LoginView)
+        CambioNIPForm cambioForm = new CambioNIPForm((java.awt.Frame)this.getParent(), true, tarjetaActiva);
+        this.dispose(); // Cerramos el menu actual
+        cambioForm.setVisible(true);
+        
+    }//GEN-LAST:event_btnCambioNIPActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        
+        // Obtenemos la referencia al LoginView (que es el padre)
+        java.awt.Frame padre = (java.awt.Frame)this.getParent();
+
+        if (padre instanceof mx.itson.cambioNIP.view.LoginView) {
+            mx.itson.cambioNIP.view.LoginView login = (mx.itson.cambioNIP.view.LoginView)padre;
+            
+            login.limpiarCampos(); 
+            login.setVisible(true);
+        }
+
+        this.dispose(); // Cerramos el menu
+        
+    }//GEN-LAST:event_btnSalirActionPerformed
+
+    
+    
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCambioNIP;
     private javax.swing.JButton btnDeposito;
