@@ -11,7 +11,7 @@ public class Conexion
 {
     
     private static String usuario = "andrey";
-    private static String clave = "---";
+    private static String clave = "andrey";
     private static String url = "jdbc:mysql://34.30.245.236:3306/cajero_automatico";
     
     private static Connection con;
