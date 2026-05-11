@@ -19,9 +19,19 @@ public class CambioNIPForm extends javax.swing.JDialog {
         initComponents();
         this.tarjetaActiva = numeroTarjeta;
         
-        // Configuraciones estéticas iniciales
+        // Configuraciones esteticas iniciales
         setTitle("Cambio de NIP - Sesion Activa");
         setLocationRelativeTo(null);
+    }
+    
+    
+    /**
+     * Metodo auxiliar para cerrar esta ventana y regresar al menu que ya estaba abierto
+     */
+    private void regresarAlMenu() {
+        // Al cerrar esta ventana con dispose, el hilo regresa a MenuPrincipalView
+        // que se quedo "pausado" esperando a que este JDialog modal terminara
+        this.dispose();
     }
     
     
@@ -163,7 +173,34 @@ public class CambioNIPForm extends javax.swing.JDialog {
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
         
-        
+       // 1. Recuperamos los datos de los PasswordFields
+        String nipActual = new String(pfNIPActual.getPassword());
+        String nipNuevo1 = new String(pfNIPNuevo1.getPassword());
+        String nipNuevo2 = new String(pfNIPNuevo2.getPassword());
+
+        // 2. Validacion rapida de campos vacios
+        if (nipActual.isEmpty() || nipNuevo1.isEmpty() || nipNuevo2.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.", "Atencion", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // 3. Llamamos al controlador para procesar la logica de negocio
+        mx.itson.cambioNIP.controllers.TarjetaController controller = new mx.itson.cambioNIP.controllers.TarjetaController();
+
+        // El metodo procesarCambioNIP ya hace todo: valida NIP actual, compara los nuevos y registra la transaccion
+        String resultado = controller.procesarCambioNIP(tarjetaActiva, nipActual, nipNuevo1, nipNuevo2);
+
+        // 4. Mostramos el resultado al usuario
+        if (resultado.contains("exitosamente")) {
+            javax.swing.JOptionPane.showMessageDialog(this, resultado, "Operacion Exitosa", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            regresarAlMenu();
+        } else {
+            // En caso de fallo real (NIP incorrecto o no coinciden), se informa y se limpia
+            javax.swing.JOptionPane.showMessageDialog(this, resultado, "Aviso del Sistema", javax.swing.JOptionPane.WARNING_MESSAGE);
+            pfNIPNuevo1.setText("");
+            pfNIPNuevo2.setText("");
+            pfNIPNuevo1.requestFocus();
+        }
         
     }//GEN-LAST:event_btnConfirmarActionPerformed
 

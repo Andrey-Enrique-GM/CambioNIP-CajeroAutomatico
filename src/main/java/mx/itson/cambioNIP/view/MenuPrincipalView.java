@@ -294,11 +294,18 @@ public class MenuPrincipalView extends javax.swing.JDialog {
     
     private void btnCambioNIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambioNIPActionPerformed
         
-        // Abrimos el formulario de cambio de NIP
-        // 'this.getParent()' porque el padre de los JDialog debe ser el Frame (LoginView)
-        CambioNIPForm cambioForm = new CambioNIPForm((java.awt.Frame)this.getParent(), true, tarjetaActiva);
-        this.dispose(); // Cerramos el menu actual
+        // Obtenemos el Frame padre (LoginView)
+        java.awt.Frame padre = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this);
+
+        // Creamos el formulario de NIP como MODAL (true)
+        CambioNIPForm cambioForm = new CambioNIPForm(padre, true, tarjetaActiva);
+
+        // NO hacemos dispose del menu. Solo mostramos el formulario
+        // Al ser modal, el programa se quedara "esperando" en la siguiente linea
         cambioForm.setVisible(true);
+
+        // Cuando el formulario de NIP se cierre (dispose), el codigo continuara aqui:
+        System.out.println("Regresando al menu principal...");
         
     }//GEN-LAST:event_btnCambioNIPActionPerformed
 
